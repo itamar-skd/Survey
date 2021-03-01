@@ -31,7 +31,7 @@ module.exports = (client, message) => {
 
     for (const requiredRole of command.requiredRoles) {
       const role = message.guild.roles.cache.find(
-        (role) => role.name.toLowerCase() === requiredRole
+        (role) => role.name.toLowerCase() === command.requiredRole
       )
 
       if (!role || !message.member.roles.cache.has(role.id)) {
