@@ -4,9 +4,9 @@ const db = require('../../models/guild')
 module.exports = {
     name: 'setroles',
     aliases: ['validroles'],
-    expectedArgs: '<Role>',
+    expectedArgs: '<Roles>',
     permissionError: 'You do not have permission to run this command.',
-    minArgs: 0,
+    minArgs: 1,
     maxArgs: null,
     permissions: ['ADMINISTRATOR'],
     requiredRoles: [],
