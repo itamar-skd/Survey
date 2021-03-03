@@ -4,7 +4,6 @@ const Guild = require('../../models/guild')
 module.exports = {
     name: 'create',
     permissionError: 'You do not have permission to run this command.',
-    permissions: ['ADMINISTRATOR'],
     requiredRoles: [],
     callback: async (message, args, client) => {
         const filter = m => m.author.id === message.author.id
@@ -19,7 +18,7 @@ module.exports = {
         })
         if (!result) return message.reply('No document was found for your server.\nPlease set up your server using \`setup\`!')
         if (!result.channelID) return message.reply('No surveys channel found!\nPlease type \`!setchannel\` to create one!')
-        if (!message.member.roles.cache.has(result.roleID) && !message.member.hasPermission('ADMINISTRATOR')) return message.reply('You cannot create surveys!')
+        if (!message.member.roles.cache.has(result.roleID) && !message.member.hasPermission('ADMINISTRATOR', {checkOwner: true})) return message.reply('You cannot create surveys!')
         do {
             try {
                 await message.channel.send('Please type the question you\'d like to add.\nYou may type \`cancel\` to finish this request. Type \`done\` when you are finished adding your questions.')
