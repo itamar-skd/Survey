@@ -2,9 +2,9 @@ const Discord = require('discord.js')
 const Guild = require('../../../models/guild')
 
 module.exports = {
-    name: 'setup',
+    name: 'setchannel',
+    aliases: ['channel'],
     permissionError: 'You do not have permission to run this command.',
-    devOnly: true,
     permissions: ['ADMINISTRATOR'],
     requiredRoles: [],
     callback: async (message, args, client) => {
