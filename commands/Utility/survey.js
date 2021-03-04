@@ -22,7 +22,7 @@ module.exports = {
         if (!guild.channelID) return message.reply(`This guild doesn\'t have a surveys channel created!\nPlease ask ${owner.user.tag} or an Administrator to set it up!`)
         if (guild.survey.length === 0) return message.reply(`This guild doesn\'t have a survey created!\nPlease ask ${owner.user.tag} or an Administrator to set it up!`)
 
-        const msg = await message.author.send(`Hiya ${message.author}!\nAre you ready to answer ${message.guild.name}'s survey?`).catch(err => {
+        const msg = await message.author.send(`Hiya ${message.author}!\nAre you ready to answer ${message.guild.name}'s survey: **${guild.surveyName}**?`).catch(err => {
             epic = false
             return message.reply('I couldn\'t DM you! Please open personal DMs!')
         })
