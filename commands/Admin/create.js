@@ -20,7 +20,7 @@ module.exports = {
             guildID: message.guild.id
         })
         if (!result) return message.reply('No document was found for your server.\nPlease set up your server using \`setup\`!')
-        if (!result.channelID) return message.reply('No surveys channel found!\nPlease type \`!setchannel\` to create one!')
+        if (!result.channelID || !client.channels.cache.get(result.channelID)) return message.reply('No surveys channel found!\nPlease type \`!setchannel\` to create one!')
         if (!message.member.roles.cache.has(result.roleID) && !message.member.hasPermission('ADMINISTRATOR')) return message.reply('You cannot create surveys!')
         message.channel.send('Please type the questions you\'d like to add! (40 Characters Maximum)\nYou may type \`cancel\` to finish this request. Type \`done\` when you are finished adding your questions.\nYou may add attachments as well.\n\nFlags: (Start your questions with the following keywords to add the flag)\n```-c = choice (Separate the choices by a comma)\n-n = number (Request number input only)\n-s = short answer (Request an answer of up to 30 characters)```\n**NOTE**: Questions will require long answers by default if no flag is added.')
         do {
@@ -47,7 +47,7 @@ module.exports = {
                         response = response.split(' ').slice(1).join(' ')
                         if (flag === '-c') {
                             types.push('choice')
-                            response = response.split(', ').join(', ')
+                            response = response.split(',').join(', ').replace(/\s+/g, ' ').trim()
                         } else if (flag === '-n') types.push('number')
                         else if (flag === '-s') types.push('short')
                     } else types.push('long')
