@@ -49,8 +49,27 @@ module.exports = {
             let answers = []
             let reply
             let c = 0
+            let yummy = '';
             for (const question of guild.survey) {
-                await msg.channel.send(`${c + 1}. **${question}**: (${Math.floor(1500 / guild.survey.length)} characters)`, guild.messageAttachments[c] ? new Discord.MessageAttachment(guild.messageAttachments[c]) : '')
+                const type = guild.surveyTypes[c]
+                let condition
+                let reason
+                console.log(guild.survey[c].split(', '))
+                if (type === 'long') {
+                    condition = 'reply.length > Math.floor(1500 / guild.survey.length)'
+                    reason = `Your answer was too long. Please shorten it.`
+                } else if (type === 'short') {
+                    condition = 'reply.length > 50'
+                    reason = 'Your answer was too long. Please shorten it.'
+                } else if (type === 'number') {
+                    condition = 'isNaN(reply)'
+                    reason = 'Please enter a number instead.'
+                } else {
+                    condition = `guild.survey[c].split(', ').every(element => element !== reply)`
+                    reason = 'Please only enter one of the keywords above.'
+                }
+                const characters = type === 'long' ? `(${Math.floor(1500 / guild.survey.length)} characters)` : type === 'short' ? `(50 characters)`: type === 'number' ? '(Number only.)' : '(Please type one of the following below.)'
+                await msg.channel.send(`${c + 1}. **${question}**: ${characters}`, guild.messageAttachments[c] ? new Discord.MessageAttachment(guild.messageAttachments[c]) : '')
                 do {
                     try {
                         const collected = await msg.channel.awaitMessages(m => m.author.id === message.author.id, {
@@ -59,12 +78,12 @@ module.exports = {
                             errors: ['time']
                         })
                         reply = collected.first().content
-                        if (reply.length > Math.floor(1500 / guild.survey.length)) msg.channel.send(`Your answer was too long. Please shorten it. (${reply.length} characters)`)
+                        if (eval(condition)) msg.channel.send(reason)
                     } catch (ex) {
                         console.error(ex)
                         return
                     }
-                } while (reply.length > Math.floor(1500 / guild.survey.length))
+                } while (eval(condition))
                 answers.push(reply)
                 c++
             }
@@ -90,7 +109,7 @@ module.exports = {
                         errors: ['time']
                     })
                     const emoji = reaction.first().emoji.name
-                    if (emoji === 'x_') return message.reply('Cancelled.')
+                    if (emoji === 'x_') return msg.channel.send('Cancelled.')
                 } catch (ex) {
                     console.error(ex)
                     return
