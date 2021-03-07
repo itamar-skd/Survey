@@ -5,6 +5,8 @@ const guildSchema = mongoose.Schema({
     channelID: String,
     creatorID: String,
     surveyName: String,
+    announcementsChannelID: String,
+    pollsChannelID: String,
     survey: Array,
     surveyTypes: Array,
     messageAttachments: Array,
