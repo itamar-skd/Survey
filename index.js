@@ -7,7 +7,7 @@ require('dotenv').config()
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 client.aliases = new Discord.Collection();
-client.devs = ['189746913631797249' ,'776516976679583774'];
+client.devs = [];
 
 ["event", "command"].forEach(handler => {
     require(`./handlers/${handler}`)(client)
